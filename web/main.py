@@ -2,7 +2,6 @@ from pathlib import Path
 
 from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from kb.client import RagClient
@@ -11,7 +10,6 @@ from kb.config import load_config
 app = FastAPI(title="kb — Karabo ML Web UI", version="0.2.0")
 
 templates = Jinja2Templates(directory=str(Path(__file__).parent / "templates"))
-static = Path(__file__).parent / "static"
 
 
 def get_client() -> RagClient:
@@ -22,8 +20,9 @@ def get_client() -> RagClient:
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     return templates.TemplateResponse(
+        request,
         "index.html",
-        {"request": request, "answer": None, "question": ""},
+        {"answer": None, "question": ""},
     )
 
 
@@ -36,9 +35,9 @@ async def query(request: Request, question: str = Form(...)):
         result = {"error": str(e), "answer": "", "sources": [], "tokens_used": 0}
 
     return templates.TemplateResponse(
+        request,
         "index.html",
         {
-            "request": request,
             "question": question,
             "answer": result.get("answer", ""),
             "sources": result.get("sources", []),
