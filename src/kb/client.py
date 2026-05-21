@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 import httpx
+
 from kb.logger import get_logger
 
 logger = get_logger()

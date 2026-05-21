@@ -19,12 +19,12 @@ from rich.console import Console
 from rich.panel import Panel
 
 from kb import __version__
-from kb.commands.rag import rag_group
-from kb.commands.model import model_group
-from kb.commands.drift import drift_group
 from kb.commands.cluster import cluster_group
-from kb.commands.config import config_group
 from kb.commands.completions import completions_group
+from kb.commands.config import config_group
+from kb.commands.drift import drift_group
+from kb.commands.model import model_group
+from kb.commands.rag import rag_group
 
 console = Console()
 
@@ -77,7 +77,7 @@ def cli(ctx: click.Context, version: bool, verbose: bool):
                 "  [bold]config init[/bold]     Create config\n"
                 "  [bold]config show[/bold]     Show config\n"
                 "  [bold]completions install[/bold]  Install shell completions\n\n"
-                "Try: [bold]kb rag query \"how to setup ArgoCD\"[/bold]",
+                'Try: [bold]kb rag query "how to setup ArgoCD"[/bold]',
                 border_style="cyan",
             )
         )

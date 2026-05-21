@@ -105,7 +105,8 @@ def query(question: str | None, top_k: int, no_sources: bool, json_output: bool)
 
 def _interactive(top_k: int, no_sources: bool):
     """Interactive RAG chat loop."""
-    console.print(Panel("[bold]kb rag chat[/bold] — interactive mode. Type [/bold]/exit[/bold] to quit.", border_style="cyan"))
+    msg = "[bold]kb rag chat[/bold] — interactive mode. Type [/bold]/exit[/bold] to quit."
+    console.print(Panel(msg, border_style="cyan"))
 
     with _get_client() as client:
         health = client.health()
@@ -156,8 +157,5 @@ def _interactive(top_k: int, no_sources: bool):
 
             if not no_sources and result.get("sources"):
                 for i, src in enumerate(result["sources"], 1):
-                    console.print(
-                        f"  [{i}] [cyan]{src.get('title', 'Unknown')}[/cyan] "
-                        f"[dim]{src.get('url', '')}[/dim]"
-                    )
+                    console.print(f"  [{i}] [cyan]{src.get('title', 'Unknown')}[/cyan] [dim]{src.get('url', '')}[/dim]")
             print()

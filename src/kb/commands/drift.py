@@ -8,8 +8,8 @@ import click
 import httpx
 from rich.console import Console
 from rich.panel import Panel
-from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich.table import Table
 
 from kb.client import RagClient
 from kb.config import load_config

@@ -1,7 +1,7 @@
 """Structured logging setup for kb CLI."""
 
-import sys
 import logging
+import sys
 from pathlib import Path
 
 

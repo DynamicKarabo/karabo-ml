@@ -25,7 +25,8 @@ def model_group():
 @model_group.command(name="serve")
 @click.option("--profile", default="", help="docker compose profile (e.g., ingest)")
 @click.option(
-    "-p", "--project-dir",
+    "-p",
+    "--project-dir",
     default=None,
     help="Path to rag-devops-assistant project (with docker-compose.yml)",
 )
@@ -81,7 +82,7 @@ def serve(profile: str, project_dir: str | None, build: bool, detach: bool):
         console.print("[green]RAG API started![/green]")
         console.print("  API:    [bold]http://localhost:8000[/bold]")
         console.print("  Qdrant: [bold]http://localhost:6333[/bold]")
-        console.print("\nQuery it with: [bold]kb rag query \"your question\"[/bold]")
+        console.print('\nQuery it with: [bold]kb rag query "your question"[/bold]')
     except subprocess.CalledProcessError as e:
         console.print(f"[red]Failed to start services:[/red] {e}")
         sys.exit(1)

@@ -8,10 +8,8 @@ import sys
 
 import click
 from rich.console import Console
-from rich.panel import Panel
 from rich.table import Table
 
-from kb.config import load_config
 from kb.logger import get_logger
 
 logger = get_logger()
@@ -130,7 +128,9 @@ def _get_docker_status(show_all: bool) -> list[dict]:
         format_str = "{{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"
         result = subprocess.run(
             ["docker", "ps", "--format", format_str],
-            capture_output=True, text=True, timeout=10,
+            capture_output=True,
+            text=True,
+            timeout=10,
         )
 
         if result.returncode != 0:
@@ -144,12 +144,14 @@ def _get_docker_status(show_all: bool) -> list[dict]:
             if len(parts) == 4:
                 name, image, status, ports = parts
                 if show_all or "rag" in name:
-                    containers.append({
-                        "name": name,
-                        "image": image,
-                        "status": status,
-                        "ports": ports,
-                    })
+                    containers.append(
+                        {
+                            "name": name,
+                            "image": image,
+                            "status": status,
+                            "ports": ports,
+                        }
+                    )
 
         return containers
     except Exception as e:
@@ -171,7 +173,9 @@ def _get_k3s_status() -> dict:
         # Check if k3s context is accessible
         ctx = subprocess.run(
             ["kubectl", "config", "current-context"],
-            capture_output=True, text=True, timeout=5,
+            capture_output=True,
+            text=True,
+            timeout=5,
         )
         if ctx.returncode != 0:
             return result
@@ -181,10 +185,13 @@ def _get_k3s_status() -> dict:
         # Get nodes
         nodes_out = subprocess.run(
             ["kubectl", "get", "nodes", "-o", "json"],
-            capture_output=True, text=True, timeout=10,
+            capture_output=True,
+            text=True,
+            timeout=10,
         )
         if nodes_out.returncode == 0:
             import json
+
             nodes_data = json.loads(nodes_out.stdout)
             for node in nodes_data.get("items", []):
                 name = node["metadata"]["name"]
@@ -195,10 +202,13 @@ def _get_k3s_status() -> dict:
         # Get namespaces with pods
         pods_out = subprocess.run(
             ["kubectl", "get", "pods", "--all-namespaces", "-o", "json"],
-            capture_output=True, text=True, timeout=10,
+            capture_output=True,
+            text=True,
+            timeout=10,
         )
         if pods_out.returncode == 0:
             import json
+
             pods_data = json.loads(pods_out.stdout)
             ns_map = {}
             for pod in pods_data.get("items", []):
@@ -213,11 +223,13 @@ def _get_k3s_status() -> dict:
                     ns_map[ns]["ready"] += 1
 
             for ns, counts in ns_map.items():
-                result["namespaces"].append({
-                    "name": ns,
-                    "pods_total": counts["total"],
-                    "pods_ready": counts["ready"],
-                })
+                result["namespaces"].append(
+                    {
+                        "name": ns,
+                        "pods_total": counts["total"],
+                        "pods_ready": counts["ready"],
+                    }
+                )
 
     except Exception as e:
         logger.debug(f"k3s status check failed: {e}")

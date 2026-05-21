@@ -6,11 +6,9 @@ import sys
 
 import click
 from rich.console import Console
-from rich.panel import Panel
 from rich.table import Table
-from rich.syntax import Syntax
 
-from kb.config import load_config, init_config, CONFIG_FILE
+from kb.config import CONFIG_FILE, init_config, load_config
 
 console = Console()
 

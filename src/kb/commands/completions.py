@@ -13,8 +13,8 @@ from rich.console import Console
 console = Console()
 
 SHELL_HELP = {
-    "bash": "eval \"$(kb completions bash)\"",
-    "zsh": "eval \"$(kb completions zsh)\"",
+    "bash": 'eval "$(kb completions bash)"',
+    "zsh": 'eval "$(kb completions zsh)"',
     "fish": "kb completions fish | source",
 }
 
@@ -27,9 +27,9 @@ def completions_group():
 def _get_source() -> str:
     """Generate completion source for the current shell (lazy import avoids circular)."""
     import click.shell_completion
+
     from kb.cli import cli
 
-    ctx = click.Context(cli)
     comp = click.shell_completion.BashComplete(
         cli=cli,
         ctx_args={},
@@ -44,6 +44,7 @@ def _get_source() -> str:
 def bash():
     """Generate bash completions."""
     from click.shell_completion import BashComplete
+
     from kb.cli import cli
 
     comp = BashComplete(
@@ -59,6 +60,7 @@ def bash():
 def zsh():
     """Generate zsh completions."""
     from click.shell_completion import ZshComplete
+
     from kb.cli import cli
 
     comp = ZshComplete(
@@ -74,6 +76,7 @@ def zsh():
 def fish():
     """Generate fish completions."""
     from click.shell_completion import FishComplete
+
     from kb.cli import cli
 
     comp = FishComplete(
